@@ -118,7 +118,6 @@ Siga os passos abaixo para contribuir:
 Pronto, agora só aguardar a análise
 
 # :black_nib: Autoras
-<div style="display:inline">
 <img src="./img/Carolina Sanches Moraes .png" width="150px" height="150px">
 <p class = "descricao_carol"><b>Professora de Informática</b>, <br>
 Desenvolvedora de Software</p>
@@ -127,4 +126,4 @@ Desenvolvedora de Software</p>
 <img src="./img/Eduarda Menegueli Souza.png" width="150px" height="150px">
 <p><b>
 Desenvolvedora de Software</b></p>
-</div>
+
