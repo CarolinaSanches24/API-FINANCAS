@@ -4,7 +4,7 @@ API para Controle de Finanças
 <br><br>
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=%20CONCLUIDO&color=GREEN&style=for-the-badge)
 
-<img src="https://hubbseguros.com.br/wp-content/uploads/2020/04/blog-2-financas.png">
+<img src="https://hubbseguros.com.br/wp-content/uploads/2020/04/blog-2-financas.png" width="50%" height="50%">
 
 # :clipboard: Descrição do Projeto
 Consiste em uma API Rest que controla finanças do usuário , fluxo de entradas e sáidas, com segurança e proteção 
