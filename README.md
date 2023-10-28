@@ -82,38 +82,11 @@ Pronto, agora só aguardar a análise
 
 # :black_nib: Autoras
 
-<div class="autoraCarol">
-<img src="./img/Carolina Sanches Moraes .png">
-<p class = "descricao_carol"><b>Professora de Informática</b>, 
+<img src="./img/Carolina Sanches Moraes .png" width="150px" height="150px">
+<p class = "descricao_carol"><b>Professora de Informática</b>, <br>
 Desenvolvedora de Software</p>
-</div>
 <br>
-<div class ="autoraEduarda">
-<img src="./img/Eduarda Menegueli Souza.png">
-<p class = "descricao_duda"><b>
+
+<img src="./img/Eduarda Menegueli Souza.png" width="150px" height="150px">
+<p><b>
 Desenvolvedora de Software</b></p>
-</div>
-<style>
-    .autoraCarol{
-        width:150px;
-        height:150px;
-        display:flex;
-        margin-right:10px;
-    }
-    .descricao_carol{
-        padding-top:2rem;
-        padding-left:3rem;
-        text-align:center;
-    }
-    .autoraEduarda{
-        width:140px;
-        height:150px;
-        display:flex;
-        margin-right:10px;
-    }
-    .descricao_duda{
-        padding-top:2rem;
-        padding-left:3rem;
-        text-align:center;
-    }
-</style>
