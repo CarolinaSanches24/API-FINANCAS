@@ -1,6 +1,7 @@
 # :bar_chart: API-FINANCAS
 
 API para Controle de Finanças
+![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=%20CONCLUIDO&color=GREEN&style=for-the-badge)
 
 <img src="https://hubbseguros.com.br/wp-content/uploads/2020/04/blog-2-financas.png">
 
