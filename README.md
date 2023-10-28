@@ -10,7 +10,7 @@ dos dados do cliente através da criptografia e autenticação do usuário.
 Utilizando também operações de CRUD - Create, Read, Update, Delete para manipular os dados do usuário.
 Oferece conexão com Banco de Dados do PostgresSQL
 # Funcionalidades do Projeto
-✅ Criar Conta Usuáriobr>
+✅ Criar Conta Usuário<br>
 ✅ Atualizar Conta <br>
 ✅ Logar <br>
 ✅ Listar Contas <br>
@@ -28,6 +28,7 @@ Oferece conexão com Banco de Dados do PostgresSQL
 <img src = "https://user-images.githubusercontent.com/25181517/192107858-fe19f043-c502-4009-8c47-476fc89718ad.png" width="80px" height="80px">
 <img src = "https://user-images.githubusercontent.com/25181517/192107854-765620d7-f909-4953-a6da-36e1ef69eea6.png"  width="80px" height="80px">
 <img src = "https://user-images.githubusercontent.com/25181517/192108891-d86b6220-e232-423a-bf5f-90903e6887c3.png"  width="80px" height="80px">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg" />
 </div>
 
 
