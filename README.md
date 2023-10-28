@@ -5,9 +5,20 @@ API para Controle de Finanças
 <img src="https://hubbseguros.com.br/wp-content/uploads/2020/04/blog-2-financas.png">
 
 # :clipboard: Descrição do Projeto
-
+Consiste em uma API Rest que controla finanças do usuário , fluxo de entradas e sáidas, com segurança e proteção dos dados do cliente através da criptografia e autenticação do usuário.
 # Funcionalidades do Projeto
-
+✅ Criar Conta Usuáriobr>
+✅ Atualizar Conta <br>
+✅ Logar <br>
+✅ Listar Contas <br>
+✅ Criar Transação <br>
+✅ Atualizar Transação<br>
+✅ Buscar uma Transação especifica <br>
+✅ Excluir Transação <br>
+✅ Consultar Extrato <br>
+✅ Listar Categorias<br>
+✅ Autenticação de Usuário via Token e senha <br>
+✅ Criptografia de Senha <br>
 # :hammer_and_pick: Tecnologias Utilizadas
 
 
@@ -15,6 +26,7 @@ API para Controle de Finanças
 - Primeiro faça o Fork do Projeto.
 -  Depois clone o repositório para seu ambiente:<br>
   Digite o comando <strong>git clone + a chave ssh do Projeto.</strong>
+  
 # Instalações de Bibliotecas Necessárias
 - npm install bcrypt :closed_lock_with_key: (Responsável pela Criptografia das senhas)
 - npm install express (processo de criação de servidores web)
@@ -68,6 +80,10 @@ O projeto pode ser executado utilizando o <strong style ="color:purple">Insomia<
   <strong style="color:red">DELETE</strong>
   http://localhost:3000/transacao/:id
 - Listar Transações
+  <br>
+  <strong style="color:purple">GET</strong>
+  http://localhost:3000/transacao/extrato
+  - Extrato
   <br>
   <strong style="color:purple">GET</strong>
   http://localhost:3000/transacao
