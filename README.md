@@ -37,16 +37,14 @@ Oferece conexão com Banco de Dados do PostgresSQL
 - Primeiro faça o Fork do Projeto.
 -  Depois clone o repositório para seu ambiente:<br>
   Digite o comando <strong>git clone + a chave ssh do Projeto.</strong>
-  
-# Instalações de Bibliotecas Necessárias
+
+# 🚀 Inicialização
 - npm install bcrypt :closed_lock_with_key: (Responsável pela Criptografia das senhas)
 - npm install express (processo de criação de servidores web)
 - npm install pg (conexao ao banco de dados PostgreSQL)
 - npm install nodemon (automaticamente reinicia o servidor quando mudanças são detectadas)
 - npm install dotenv ( gerenciamento variáveis de ambiente)
 - npm install jsonwebtoken :key: (criação de tokens )
-# 🚀 Inicialização
-
 # Execução do Projeto
 
 O projeto pode ser executado utilizando o <strong style ="color:purple">Insomia</strong>
