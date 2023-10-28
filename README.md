@@ -8,7 +8,7 @@ API para Controle de Finanças
 
 # Funcionalidades do Projeto
 
-# Tecnologias Utilizadas
+# :hammer_and_pick: Tecnologias Utilizadas
 
 # Implementação do Projeto
 
@@ -16,7 +16,7 @@ API para Controle de Finanças
 
 # Execução do Projeto
 
-# Contribuições
+# 🤝Contribuições
 
 Siga os passos abaixo para contribuir:
 
@@ -36,5 +36,6 @@ Pronto, agora só aguardar a análise
 
 # :black_nib: Autoras
 
-<img src="">
-<img src="">
+<div class="autoras">
+<img src="./img/Carolina Sanches .png"><img src="./img/Eduarda Menegueli Souza.png">
+</div>
