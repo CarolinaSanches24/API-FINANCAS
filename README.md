@@ -10,7 +10,11 @@ API para Controle de Finanças
 
 # :hammer_and_pick: Tecnologias Utilizadas
 
+
 # Implementação do Projeto
+- Primeiro faça o Fork do Projeto.
+-  Depois clone o repositório para seu ambiente:<br>
+  Digite o comando <strong>git clone + a chave ssh do Projeto.</strong>
 
 # 🚀 Inicialização
 
