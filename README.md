@@ -16,6 +16,52 @@ API para Controle de Finanças
 
 # Execução do Projeto
 
+O projeto pode ser executado utilizando o <strong style ="color:purple">Insomia</strong>
+<br> Através das Rotas Abaixo:
+
+- Cadastrar Usuário
+  <br>
+  <strong style="color:green">POST</strong>
+  http://localhost:3000/usuario
+
+- Login
+  <br>
+  <strong style="color:green">POST</strong>
+  http://localhost:3000/login
+
+- Exibir Usuário
+  <br>
+  <strong style="color:purple">GET</strong>
+  http://localhost:3000/usuario
+- Atualizar Usuário
+  <br>
+  <strong style="color:orange">PUT</strong>
+  http://localhost:3000/usuario
+- Listar Categorias
+  <br>
+  <strong style="color:purple">GET</strong>
+  http://localhost:3000/categoria
+- Cadastrar Transação
+  <br>
+  <strong style="color:green">POST</strong>
+  http://localhost:3000/transacao
+- Atualizar Transação
+  <br>
+  <strong style="color:orange">PUT</strong>
+  http://localhost:3000/transacao/:id
+- Obter Transação
+  <br>
+  <strong style="color:purple">GET</strong>
+  http://localhost:3000/transacao/:id
+- Excluir Transação
+  <br>
+  <strong style="color:red">DELETE</strong>
+  http://localhost:3000/transacao/:id
+- Listar Transações
+  <br>
+  <strong style="color:purple">GET</strong>
+  http://localhost:3000/transacao
+
 # 🤝Contribuições
 
 Siga os passos abaixo para contribuir:
@@ -36,6 +82,38 @@ Pronto, agora só aguardar a análise
 
 # :black_nib: Autoras
 
-<div class="autoras">
-<img src="./img/Carolina Sanches .png"><img src="./img/Eduarda Menegueli Souza.png">
+<div class="autoraCarol">
+<img src="./img/Carolina Sanches Moraes .png">
+<p class = "descricao_carol"><b>Professora de Informática</b>, 
+Desenvolvedora de Software</p>
 </div>
+<br>
+<div class ="autoraEduarda">
+<img src="./img/Eduarda Menegueli Souza.png">
+<p class = "descricao_duda"><b>
+Desenvolvedora de Software</b></p>
+</div>
+<style>
+    .autoraCarol{
+        width:150px;
+        height:150px;
+        display:flex;
+        margin-right:10px;
+    }
+    .descricao_carol{
+        padding-top:2rem;
+        padding-left:3rem;
+        text-align:center;
+    }
+    .autoraEduarda{
+        width:140px;
+        height:150px;
+        display:flex;
+        margin-right:10px;
+    }
+    .descricao_duda{
+        padding-top:2rem;
+        padding-left:3rem;
+        text-align:center;
+    }
+</style>
