@@ -5,7 +5,10 @@ API para Controle de Finanças
 <img src="https://hubbseguros.com.br/wp-content/uploads/2020/04/blog-2-financas.png">
 
 # :clipboard: Descrição do Projeto
-Consiste em uma API Rest que controla finanças do usuário , fluxo de entradas e sáidas, com segurança e proteção dos dados do cliente através da criptografia e autenticação do usuário.
+Consiste em uma API Rest que controla finanças do usuário , fluxo de entradas e sáidas, com segurança e proteção 
+dos dados do cliente através da criptografia e autenticação do usuário. 
+Utilizando também operações de CRUD - Create, Read, Update, Delete para manipular os dados do usuário.
+Oferece conexão com Banco de Dados do PostgresSQL
 # Funcionalidades do Projeto
 ✅ Criar Conta Usuáriobr>
 ✅ Atualizar Conta <br>
