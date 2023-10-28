@@ -1,4 +1,5 @@
 const pool = require("../configuracao/conexao");
+
 const validarCamposObrigatorios = async (req, res, next) => {
   const { tipo, descricao, valor, data, categoria_id } = req.body;
   try {
@@ -40,7 +41,6 @@ const verificarSeCategoriaExiste = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do Servidor" });
   }
 };

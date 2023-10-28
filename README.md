@@ -12,7 +12,7 @@ API para Controle de Finanças
 
 # Implementação do Projeto
 
-# Inicialização
+# 🚀 Inicialização
 
 # Execução do Projeto
 

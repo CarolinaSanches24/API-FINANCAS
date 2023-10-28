@@ -40,8 +40,6 @@ const listarTransacoes = async (req, res) => {
       return res.status(200).json(listaTransacoes.rows);
     }
   } catch (error) {
-    console.log(error.message);
-
     return res.status(500).json({ mensagem: "Erro interno do Servidor" });
   }
 };
