@@ -83,7 +83,7 @@ Pronto, agora só aguardar a análise
 # :black_nib: Autoras
 
 <div class="autoraCarol">
-<img src="./img/Carolina Sanches Moraes .png">
+<img src="./img/Carolina Sanches Moraes .png" width="150px" height="150px">
 <p class = "descricao_carol"><b>Professora de Informática</b>, 
 Desenvolvedora de Software</p>
 </div>
