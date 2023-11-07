@@ -4,6 +4,7 @@ const {
   loginUsuario,
   exibirUsuario,
   atualizarUsuario,
+  excluirUsuario,
 } = require("../controladores/usuarios");
 const autenticacao = require("../intermediarios/autenticacao");
 
@@ -15,4 +16,5 @@ rotas.post("/login", loginUsuario);
 rotas.use(autenticacao);
 rotas.get("/usuario", exibirUsuario);
 rotas.put("/usuario", atualizarUsuario);
+
 module.exports = rotas;

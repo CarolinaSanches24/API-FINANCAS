@@ -35,7 +35,7 @@ const cadastrarUsuario = async (req, res) => {
         .json({ mensagem: "Já existe usuário com o e-mail informado" });
     }
 
-    const saltRounds = 12;
+    const saltRounds = 10;
     const hash = bcrypt.hashSync(senha, saltRounds);
 
     const query = `insert into usuarios (nome, email, senha) values($1,$2,$3) returning *`;
