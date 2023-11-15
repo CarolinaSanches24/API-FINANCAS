@@ -1,35 +1,13 @@
-const pool = require("../configuracao/conexao");
+const knex = require("../configuracao/conexao");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
-const validacaoCampo = (campo) => {
-  if (campo === null || campo === "" || campo === undefined) {
-    return true;
-  } else {
-    return false;
-  }
-};
 
 const cadastrarUsuario = async (req, res) => {
   try {
     const { nome, email, senha } = req.body;
+    const usuarioExiste = await knex("usuarios").where({ email }).first();
 
-    const emailValidado = validacaoCampo(email);
-    const nomeValidado = validacaoCampo(nome);
-    const senhaValidado = validacaoCampo(senha);
-
-    if (emailValidado || nomeValidado || senhaValidado) {
-      return res
-        .status(400)
-        .json({ mensagem: "Todos os campos são obrigatórios" });
-    }
-
-    const usuarioExiste = await pool.query(
-      "select count(*) from usuarios where email=$1",
-      [email]
-    );
-
-    if (usuarioExiste.rows[0].count !== "0") {
+    if (usuarioExiste) {
       return res
         .status(400)
         .json({ mensagem: "Já existe usuário com o e-mail informado" });
@@ -38,16 +16,15 @@ const cadastrarUsuario = async (req, res) => {
     const saltRounds = 10;
     const hash = bcrypt.hashSync(senha, saltRounds);
 
-    const query = `insert into usuarios (nome, email, senha) values($1,$2,$3) returning *`;
-    const params = [nome, email, hash];
+    const novoUsuario = await knex("usuarios")
+      .insert({
+        nome,
+        email,
+        senha: hash,
+      })
+      .returning(["id", "nome", "email"]);
 
-    const usuario = await pool.query(query, params);
-
-    return res.status(201).json({
-      id: usuario.rows[0].id,
-      nome: usuario.rows[0].nome,
-      email: usuario.rows[0].email,
-    });
+    return res.status(201).json(novoUsuario);
   } catch (erro) {
     return res.status(500).json({ mensagem: "Erro no servidor" });
   }
