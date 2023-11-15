@@ -33,39 +33,29 @@ const cadastrarUsuario = async (req, res) => {
 const loginUsuario = async (req, res) => {
   try {
     const { email, senha } = req.body;
-    const emailValidado = validacaoCampo(email);
-    const senhaValidado = validacaoCampo(senha);
 
-    if (emailValidado || senhaValidado) {
-      return res.status(400).json({ mensagem: "E-mail ou senha incorreto" });
-    }
-    const usuario = await pool.query("select * from usuarios where email=$1", [
-      email,
-    ]);
+    const usuarioExiste = await knex("usuarios").where({ email }).first();
 
-    if (usuario.rowCount === 0) {
-      return res.status(400).json({ mensagem: "E-mail ou senha incorreto" });
+    if (!usuarioExiste) {
+      return res.status(404).json({ mensagem: "Usuário não encontrado" });
     }
 
-    const senhaValida = bcrypt.compareSync(senha, usuario.rows[0].senha);
+    const senhaValida = bcrypt.compare(senha, usuarioExiste.senha);
 
     if (!senhaValida) {
       return res.status(400).json({ mensagem: "E-mail ou senha incorreto" });
     }
 
-    const secretKey = process.env.SECRET_KEY;
-
-    const token = jwt.sign({ id: usuario.rows[0].id }, secretKey, {
-      expiresIn: "8h",
-    });
-
+    const dadosTokenUsuario = {
+      id: usuarioExiste.id,
+      nome: usuarioExiste.nome,
+    };
+    const SECRET_KEY = process.env.SECRET_KEY;
+    const token = jwt.sign(dadosTokenUsuario, SECRET_KEY, { expiresIn: "8h" });
+    delete usuarioExiste.senha;
     return res.status(200).json({
-      usuario: {
-        id: usuario.rows[0].id,
-        nome: usuario.rows[0].nome,
-        email: usuario.rows[0].email,
-      },
-      token: token,
+      usuario: usuarioExiste,
+      token,
     });
   } catch (erro) {
     return res.status(500).json({ mensagem: "Erro no servidor" });

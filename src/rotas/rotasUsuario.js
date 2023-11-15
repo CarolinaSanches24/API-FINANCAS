@@ -6,16 +6,17 @@ const {
   atualizarUsuario,
   excluirUsuario,
 } = require("../controladores/usuarios");
-// const { autenticacao } = require("../intermediarios/autenticacao");
+const autenticacao = require("../intermediarios/autenticacao");
 const validarCorpoRequisicao = require("../intermediarios/validarCorpoRequisicao");
 const schemaUsuario = require("../schemas/schemaUsuario");
+const schemaLogin = require("../schemas/schema.login");
 
 const rotas = express();
 
 rotas.post("/usuario", validarCorpoRequisicao(schemaUsuario), cadastrarUsuario);
-// rotas.post("/login", loginUsuario);
+rotas.post("/login", validarCorpoRequisicao(schemaLogin), loginUsuario);
 
-// rotas.use(autenticacao);
+rotas.use(autenticacao);
 // rotas.get("/usuario", exibirUsuario);
 // rotas.put("/usuario", atualizarUsuario);
 

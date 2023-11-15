@@ -1,29 +1,30 @@
+const knex = require("../configuracao/conexao");
 const jwt = require("jsonwebtoken");
 
 const autenticacao = async (req, res, next) => {
-  try {
-    const bearerToken = req.headers.authorization;
-    const token = bearerToken.replace("Bearer ", "");
+  const { authorization } = req.headers;
 
-    if (!token) {
-      return res.status(403).json({
-        mensagem:
-          "Para acessar este recurso um token de autenticação válido deve ser enviado",
-      });
+  if (!authorization) {
+    return res.status(401).json("Não autorizado");
+  }
+  try {
+    const token = authorization.replace("Bearer", "").trim();
+
+    const SECRET_KEY = process.env.SECRET_KEY;
+    const { id } = jwt.verify(token, SECRET_KEY);
+
+    const usuarioExiste = await knex("usuarios").where({ id }).first();
+
+    if (!usuarioExiste) {
+      return res.status(404).json("Token Inválido");
     }
 
-    const secretKey = process.env.SECRET_KEY;
+    const { senha, ...usuario } = usuarioExiste;
 
-    const usuario = jwt.verify(token, secretKey);
-
-    req.usuarioId = usuario.id;
-
+    req.usuario = usuario;
     next();
   } catch (error) {
-    return res.status(401).json({
-      mensagem:
-        "Para acessar este recurso um token de autenticação válido deve ser enviado",
-    });
+    return res.status(400).json(error.message);
   }
 };
 
