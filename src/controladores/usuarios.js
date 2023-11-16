@@ -64,15 +64,7 @@ const loginUsuario = async (req, res) => {
 
 const exibirUsuario = async (req, res) => {
   try {
-    const usuario = await pool.query("select * from usuarios where id=$1", [
-      req.usuarioId,
-    ]);
-
-    return res.status(200).json({
-      id: usuario.rows[0].id,
-      nome: usuario.rows[0].nome,
-      email: usuario.rows[0].email,
-    });
+    return res.status(200).json(req.usuario);
   } catch (erro) {
     return res.status(500).json({ mensagem: "Erro no servidor" });
   }
@@ -81,46 +73,46 @@ const exibirUsuario = async (req, res) => {
 const atualizarUsuario = async (req, res) => {
   try {
     const { nome, email, senha } = req.body;
+    const { id } = req.usuario;
 
-    const emailValidado = validacaoCampo(email);
-    const nomeValidado = validacaoCampo(nome);
-    const senhaValidado = validacaoCampo(senha);
-
-    if (emailValidado || nomeValidado || senhaValidado) {
-      return res
-        .status(400)
-        .json({ mensagem: "Todos os campos são obrigatórios" });
-    }
-
-    const usuarioExiste = await pool.query(
-      "select count(*) from usuarios where email=$1",
-      [email]
-    );
-
-    if (usuarioExiste.rows[0].count !== "0") {
-      return res.status(400).json({
-        mensagem:
-          "O e-mail informado já está sendo utilizado por outro usuário",
-      });
+    if (email !== req.usuario.email) {
+      const emailUsuarioExiste = await knex("usuarios")
+        .where({ email })
+        .first();
+      if (emailUsuarioExiste) {
+        return res.status(400).json("O Email já existe");
+      }
     }
 
     const saltRounds = 12;
     const hash = bcrypt.hashSync(senha, saltRounds);
 
-    const query = `update usuarios set nome=$1, email=$2, senha=$3 where id=$4 returning *`;
-    const params = [nome, email, hash, req.usuarioId];
-
-    const usuario = await pool.query(query, params);
-
-    return res.status(204).send();
+    const usuarioAtualizado = await knex("usuarios").where({ id }).update({
+      nome,
+      email,
+      senha: hash,
+    });
+    if (!usuarioAtualizado) {
+      return res.status(400).json("O usuário não foi atualizado");
+    }
+    return res.status(200).json("Usuário foi atualizado com sucesso");
   } catch (erro) {
     return res.status(500).json({ mensagem: "Erro no servidor" });
   }
 };
-
+const excluirUsuario = async (req, res) => {
+  const { id } = req.usuario;
+  const usuarioExiste = await knex("usuarios").where({ id }).first();
+  if (!usuarioExiste) {
+    return res.status(404).json({ mensagem: "Usuário não encontrado" });
+  }
+  const deletarUsuario = await knex("usuarios").where({ id }).del();
+  return res.json("Usuário excluido com sucesso!");
+};
 module.exports = {
   cadastrarUsuario,
   loginUsuario,
   exibirUsuario,
   atualizarUsuario,
+  excluirUsuario,
 };
