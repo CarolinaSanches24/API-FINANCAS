@@ -6,19 +6,19 @@ const {
 } = require("../intermediarios/validacoesTransacoes");
 
 const {
-  listarTransacoes,
+  exibirTransacoes,
   exibirTransacao,
   cadastrarTransacao,
   atualizarTransacao,
   excluirTransacao,
-  consultarExtrato,
+  exibirExtrato,
 } = require("../controladores/transacoes");
 
 const rotas = express();
 
 rotas.post("/transacao", cadastrarTransacao);
-// rotas.get("/transacao", listarTransacoes);
-// rotas.get("/transacao/extrato", consultarExtrato);
+rotas.get("/transacao", exibirTransacoes);
+rotas.get("/transacao/extrato", exibirExtrato);
 rotas.get("/transacao/:id", verificaSeNumeroTransacaoExiste, exibirTransacao);
 
 rotas.put(

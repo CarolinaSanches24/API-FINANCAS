@@ -35,46 +35,49 @@ const cadastrarTransacao = async (req, res) => {
     return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
 };
-const listarTransacoes = async (req, res) => {
+const exibirTransacoes = async (req, res) => {
   try {
-    const query = `select t.id, t.tipo, t.descricao, 
-    t.valor, t.data, t.usuario_id, t.categoria_id , 
-    c.descricao as categoria_nome
-    from transacoes as t
-    join categorias as c on t.categoria_id = c.id
-    where t.usuario_id=$1;`;
+    const listaTransacoes = await knex("transacoes as t")
+      .select(
+        "t.id",
+        "t.tipo",
+        "t.descricao",
+        "t.valor",
+        "t.data",
+        "t.usuario_id",
+        "t.categoria_id",
+        "c.descricao as categoria_nome"
+      )
+      .join("categorias as c", "t.categoria_id", "c.id")
+      .where("t.usuario_id", req.usuario.id);
 
-    const params = [req.usuarioId];
+    const { filtro } = req.query;
 
-    const filtros = req.query.filtro;
+    if (filtro) {
+      const listaTransacoesFiltro = await knex("transacoes as t")
+        .select(
+          "t.id",
+          "t.tipo",
+          "t.descricao",
+          "t.valor",
+          "t.data",
+          "t.usuario_id",
+          "t.categoria_id",
+          "c.descricao as categoria_nome"
+        )
+        .join("categorias as c", "t.categoria_id", "c.id")
+        .where("t.usuario_id", req.usuario.id)
+        .andWhere(function () {
+          if (Array.isArray(filtro)) {
+            this.whereRaw(`c.descricao SIMILAR TO '%(${filtro.join("|")})%'`);
+          } else {
+            this.whereRaw(`c.descricao ilike '%${filtro}%'`);
+          }
+        });
 
-    if (filtros) {
-      let query2 = `select t.id, t.tipo, t.descricao, 
-      t.valor, t.data, t.usuario_id, t.categoria_id , 
-      c.descricao as categoria_nome
-      from transacoes as t
-      join categorias as c on t.categoria_id = c.id
-      where t.usuario_id=$1 `;
-
-      let condicaoFiltro = "";
-      if (Array.isArray(filtros)) {
-        condicaoFiltro += ` and c.descricao SIMILAR TO '%(${filtros.join(
-          "|"
-        )})%' `;
-      } else {
-        condicaoFiltro += ` and c.descricao ilike '%${filtros}%'`;
-      }
-
-      const resultado = await pool.query(query2 + condicaoFiltro, [
-        req.usuarioId,
-      ]);
-
-      res.json(resultado.rows);
-    } else {
-      const listaTransacoes = await pool.query(query, params);
-
-      return res.status(200).json(listaTransacoes.rows);
+      return res.status(200).json(listaTransacoesFiltro);
     }
+    return res.status(200).json(listaTransacoes);
   } catch (error) {
     return res.status(500).json({ mensagem: "Erro interno do Servidor" });
   }
@@ -152,33 +155,35 @@ const excluirTransacao = async (req, res) => {
   }
 };
 
-const consultarExtrato = async (req, res) => {
+const exibirExtrato = async (req, res) => {
   try {
-    const entradas = await pool.query(
-      `select sum(valor) entrada from transacoes where tipo=$1 and usuario_id=$2`,
-      ["entrada", req.usuarioId]
-    );
+    const entradas = await knex("transacoes")
+      .sum("valor as entrada")
+      .where({ tipo: "entrada" })
+      .andWhere("usuario_id", req.usuario.id);
 
-    const saidas = await pool.query(
-      `select sum(valor) saida from transacoes where tipo=$1 and usuario_id=$2`,
-      ["saida", req.usuarioId]
-    );
+    const saidas = await knex("transacoes")
+      .sum("valor as saida")
+      .where({ tipo: "saida" })
+      .andWhere("usuario_id", req.usuario.id);
 
     const extrato = {
-      entrada: entradas.rows[0].entrada ? entradas.rows[0].entrada : 0,
-      saida: saidas.rows[0].saida ? saidas.rows[0].saida : 0,
+      entrada: entradas[0].entrada || 0,
+      saida: saidas[0].saida || 0,
     };
+
     return res.status(200).json(extrato);
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do Servidor " });
   }
 };
 
 module.exports = {
-  listarTransacoes,
+  exibirTransacoes,
   exibirTransacao,
   cadastrarTransacao,
   atualizarTransacao,
   excluirTransacao,
-  consultarExtrato,
+  exibirExtrato,
 };
