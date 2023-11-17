@@ -26,7 +26,7 @@ const cadastrarUsuario = async (req, res) => {
 
     return res.status(201).json(novoUsuario);
   } catch (erro) {
-    return res.status(500).json({ mensagem: "Erro no servidor" });
+    return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
 };
 
@@ -43,7 +43,7 @@ const loginUsuario = async (req, res) => {
     const senhaValida = bcrypt.compare(senha, usuarioExiste.senha);
 
     if (!senhaValida) {
-      return res.status(400).json({ mensagem: "E-mail ou senha incorreto" });
+      return res.status(400).json({ mensagem: "E-mail ou senha incorretos" });
     }
 
     const dadosTokenUsuario = {
@@ -58,7 +58,7 @@ const loginUsuario = async (req, res) => {
       token,
     });
   } catch (erro) {
-    return res.status(500).json({ mensagem: "Erro no servidor" });
+    return res.status(500).json({ mensagem: "Erro intern do servidor" });
   }
 };
 
@@ -66,7 +66,7 @@ const exibirUsuario = async (req, res) => {
   try {
     return res.status(200).json(req.usuario);
   } catch (erro) {
-    return res.status(500).json({ mensagem: "Erro no servidor" });
+    return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
 };
 
@@ -80,7 +80,7 @@ const atualizarUsuario = async (req, res) => {
         .where({ email })
         .first();
       if (emailUsuarioExiste) {
-        return res.status(400).json("O Email já existe");
+        return res.status(400).json({ mensagem: "O Email já existe" });
       }
     }
 
@@ -92,22 +92,26 @@ const atualizarUsuario = async (req, res) => {
       email,
       senha: hash,
     });
-    if (!usuarioAtualizado) {
-      return res.status(400).json("O usuário não foi atualizado");
-    }
-    return res.status(200).json("Usuário foi atualizado com sucesso");
+
+    return res
+      .status(200)
+      .json({ mensagem: "Usuário foi atualizado com sucesso" });
   } catch (erro) {
-    return res.status(500).json({ mensagem: "Erro no servidor" });
+    return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
 };
 const excluirUsuario = async (req, res) => {
   const { id } = req.usuario;
-  const usuarioExiste = await knex("usuarios").where({ id }).first();
-  if (!usuarioExiste) {
-    return res.status(404).json({ mensagem: "Usuário não encontrado" });
+  try {
+    const usuarioExiste = await knex("usuarios").where({ id }).first();
+    if (!usuarioExiste) {
+      return res.status(404).json({ mensagem: "Usuário não encontrado" });
+    }
+    const deletarUsuario = await knex("usuarios").where({ id }).del();
+    return res.json({ mensagem: "Usuário excluido com sucesso!" });
+  } catch (error) {
+    return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
-  const deletarUsuario = await knex("usuarios").where({ id }).del();
-  return res.json("Usuário excluido com sucesso!");
 };
 module.exports = {
   cadastrarUsuario,

@@ -11,7 +11,7 @@ const schemaUsuario = joi.object({
     "string.email": "O campo email precisa ter um formato válido",
   }),
   senha: joi.string().min(5).required().messages({
-    "any.required": "O campo nome é obrigatório",
+    "any.required": "O campo senha é obrigatório",
     "string.empty": "O campo senha é obrigatório",
     "string.min": "A senha precisa conter, no mínimo, 5 caracteres",
   }),

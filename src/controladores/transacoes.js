@@ -1,4 +1,40 @@
-const pool = require("../configuracao/conexao");
+const knex = require("../configuracao/conexao");
+
+const cadastrarTransacao = async (req, res) => {
+  const { tipo, descricao, valor, data, categoria_id } = req.body;
+
+  const categoria = await knex("categorias")
+    .columns(["descricao as categoria_nome"])
+    .where("id", categoria_id)
+    .first();
+  if (!categoria) {
+    return res.status(404).json({ mensagem: "Categoria não encontrada" });
+  }
+  if (tipo != "entrada" && tipo != "saida") {
+    return res.status(400).json({ mensagem: "Tipo de Transação Inválida!" });
+  }
+
+  try {
+    const transacao = await knex("transacoes")
+      .insert({
+        tipo,
+        descricao,
+        valor,
+        data,
+        usuario_id: req.usuario.id,
+        categoria_id,
+      })
+      .returning("*");
+    const novaTransacao = {
+      ...transacao[0],
+      ...categoria,
+    };
+    return res.json(novaTransacao);
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ mensagem: "Erro interno do servidor" });
+  }
+};
 const listarTransacoes = async (req, res) => {
   try {
     const query = `select t.id, t.tipo, t.descricao, 
@@ -47,61 +83,26 @@ const listarTransacoes = async (req, res) => {
 const obterTransacao = async (req, res) => {
   const { id } = req.params;
 
-  const query = `select t.id, t.tipo, t.descricao, 
-    t.valor, t.data, t.usuario_id, t.categoria_id , 
-    c.descricao as categoria_nome
-    from transacoes as t
-    join categorias as c on t.categoria_id = c.id
-    where t.usuario_id=$1 and t.id=$2`;
-
-  const params = [req.usuarioId, id];
-
   try {
-    const { rows } = await pool.query(query, params);
-
-    const transacao = rows[0];
-
+    const transacao = await knex("transacoes")
+      .select(
+        "transacoes.id",
+        "transacoes.tipo",
+        "transacoes.descricao",
+        "transacoes.valor",
+        "transacoes.data",
+        "transacoes.usuario_id",
+        "transacoes.categoria_id",
+        "categorias.descricao as categoria_nome"
+      )
+      .where("transacoes.id", id)
+      .andWhere("transacoes.usuario_id", req.usuario.id)
+      .leftJoin("categorias", "transacoes.categoria_id", "categorias.id");
     return res.status(200).json(transacao);
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({ mensagem: "Erro interno do Servidor" });
   }
-};
-
-const cadastrarTransacao = async (req, res) => {
-  const { tipo, descricao, valor, data, categoria_id } = req.body;
-
-  const query = `insert into transacoes (tipo, descricao, valor,
-     data, usuario_id, categoria_id ) 
-     values ($1, $2, $3, $4 , $5, $6) returning *`;
-
-  const params = [
-    tipo.toLowerCase(),
-    descricao,
-    valor,
-    data,
-    req.usuarioId,
-    categoria_id,
-  ];
-
-  const selecaoCategoria = await pool.query(
-    `select descricao as categoria_nome from categorias where id=$1`,
-    [categoria_id]
-  );
-  if (selecaoCategoria.rowCount === 0) {
-    return res.status(404).json({ mensagem: "Categoria não existe" });
-  }
-  if (params[0] != "entrada" && params[0] != "saida") {
-    return res.status(400).json({ mensagem: "Tipo de Transação Inválida!" });
-  }
-
-  const inserirDados = await pool.query(query, params);
-  const { categoria_nome } = selecaoCategoria.rows[0];
-
-  const novaTransacao = {
-    ...inserirDados.rows[0],
-    categoria_nome,
-  };
-  return res.status(201).json(novaTransacao);
 };
 
 const atualizarTransacao = async (req, res) => {

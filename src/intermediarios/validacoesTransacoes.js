@@ -1,4 +1,4 @@
-const pool = require("../configuracao/conexao");
+const knex = require("../configuracao/conexao");
 
 const validarCamposObrigatorios = async (req, res, next) => {
   const { tipo, descricao, valor, data, categoria_id } = req.body;
@@ -17,11 +17,12 @@ const validarCamposObrigatorios = async (req, res, next) => {
 const verificaSeNumeroTransacaoExiste = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const { rowCount } = await pool.query(
-      "select *from transacoes where id=$1 and usuario_id = $2",
-      [id, req.usuarioId]
-    );
-    if (rowCount === 0) {
+    const transacao = await knex("transacoes")
+      .where({ id })
+      .andWhere("usuario_id", "=", req.usuario.id)
+      .first();
+
+    if (!transacao) {
       return res.status(404).json({ mensagem: "Transação não encontrada" });
     }
     next();
