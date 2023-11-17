@@ -80,7 +80,7 @@ const listarTransacoes = async (req, res) => {
   }
 };
 
-const obterTransacao = async (req, res) => {
+const exibirTransacao = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -108,40 +108,45 @@ const obterTransacao = async (req, res) => {
 const atualizarTransacao = async (req, res) => {
   const { descricao, valor, data, categoria_id, tipo } = req.body;
   const { id } = req.params;
-
+  const categoria = await knex("categorias")
+    .columns(["descricao as categoria_nome"])
+    .where("id", categoria_id)
+    .first();
+  if (!categoria) {
+    return res.status(404).json({ mensagem: "Categoria não encontrada" });
+  }
+  if (tipo != "entrada" && tipo != "saida") {
+    return res.status(400).json({ mensagem: "Tipo de Transação Inválida!" });
+  }
   try {
-    const query = `update transacoes SET tipo = $1, descricao = $2,
-    valor = $3, data = $4 ,categoria_id = $5 where usuario_id =$6 and id = $7`;
-    const params = [
-      tipo.toLowerCase(),
-      descricao,
-      valor,
-      data,
-      categoria_id,
-      req.usuarioId,
-      id,
-    ];
+    const transacao = await knex("transacoes")
+      .update({
+        tipo,
+        descricao,
+        valor,
+        data,
+        usuario_id: req.usuario.id,
+        categoria_id,
+      })
+      .where({ id })
+      .andWhere("usuario_id", req.usuario.id);
 
-    if (params[0] != "entrada" && params[0] != "saida") {
-      return res.status(400).json({ mensagem: "Tipo de Transação Inválida!" });
-    }
-
-    await pool.query(query, params);
-
-    return res.send();
+    return res.status(204).send();
   } catch (error) {
-    res.status(500).json({ messagem: "Erro interno do servidor" });
+    console.log(error.message);
+    return res.status(500).json({ mensagem: "Erro interno do servidor" });
   }
 };
 
 const excluirTransacao = async (req, res) => {
   const { id } = req.params;
   try {
-    await pool.query("delete from transacoes where id = $1 and usuario_id=$2", [
-      id,
-      req.usuarioId,
-    ]);
-    return res.status(200).send();
+    const trasacao = await knex("transacoes")
+      .where({ id })
+      .andWhere("usuario_id", req.usuario.id)
+      .del();
+
+    return res.status(204).send();
   } catch (error) {
     res.status(500).json({ messagem: "Erro interno do servidor" });
   }
@@ -171,7 +176,7 @@ const consultarExtrato = async (req, res) => {
 
 module.exports = {
   listarTransacoes,
-  obterTransacao,
+  exibirTransacao,
   cadastrarTransacao,
   atualizarTransacao,
   excluirTransacao,
