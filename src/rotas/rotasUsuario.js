@@ -8,7 +8,7 @@ const {
 } = require("../controladores/usuarios");
 
 const autenticacao = require("../intermediarios/autenticacao");
-const validarCorpoRequisicao = require("../intermediarios/validarCorpoRequisicao");
+const { validarCorpoRequisicao } = require("../intermediarios/validacoes");
 const { schemaUsuario, schemaLogin } = require("../schemas/schemaUsuario");
 
 const rotas = express();

@@ -53,6 +53,8 @@ Oferece conexão com Banco de Dados do PostgresSQL
 - npm install nodemon (automaticamente reinicia o servidor quando mudanças são detectadas)
 - npm install dotenv ( gerenciamento variáveis de ambiente)
 - npm install jsonwebtoken :key: (criação de tokens )
+- npm install Knex (query builder)
+- npm install joi (schemas)
 
 # Execução do Projeto
 
@@ -77,7 +79,11 @@ O projeto pode ser executado utilizando o <strong style ="color:purple">Insomia<
   <br>
   <strong style="color:orange">PUT</strong>
   http://localhost:3000/usuario
-- Listar Categorias
+  - Excluir Usuário
+    <br>
+    <strong style="color:purple">DELETE</strong>
+    http://localhost:3000/usuario
+- Exibir Categorias
   <br>
   <strong style="color:purple">GET</strong>
   http://localhost:3000/categoria
@@ -89,7 +95,7 @@ O projeto pode ser executado utilizando o <strong style ="color:purple">Insomia<
   <br>
   <strong style="color:orange">PUT</strong>
   http://localhost:3000/transacao/:id
-- Obter Transação
+- Exibir Transação
   <br>
   <strong style="color:purple">GET</strong>
   http://localhost:3000/transacao/:id
@@ -97,7 +103,7 @@ O projeto pode ser executado utilizando o <strong style ="color:purple">Insomia<
   <br>
   <strong style="color:red">DELETE</strong>
   http://localhost:3000/transacao/:id
-- Listar Transações
+- Exibir Transações
   <br>
   <strong style="color:purple">GET</strong>
   http://localhost:3000/transacao/extrato

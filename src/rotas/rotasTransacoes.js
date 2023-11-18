@@ -1,9 +1,8 @@
 const express = require("express");
 const {
-  validarCamposObrigatorios,
+  validarCorpoRequisicao,
   verificaSeNumeroTransacaoExiste,
-  verificarSeCategoriaExiste,
-} = require("../intermediarios/validacoesTransacoes");
+} = require("../intermediarios/validacoes");
 
 const {
   exibirTransacoes,
@@ -14,15 +13,22 @@ const {
   exibirExtrato,
 } = require("../controladores/transacoes");
 
+const { schemaTrasacao } = require("../schemas/schemaTransacoes");
+
 const rotas = express();
 
-rotas.post("/transacao", cadastrarTransacao);
+rotas.post(
+  "/transacao",
+  validarCorpoRequisicao(schemaTrasacao),
+  cadastrarTransacao
+);
 rotas.get("/transacao", exibirTransacoes);
 rotas.get("/transacao/extrato", exibirExtrato);
 rotas.get("/transacao/:id", verificaSeNumeroTransacaoExiste, exibirTransacao);
 
 rotas.put(
   "/transacao/:id",
+  validarCorpoRequisicao(schemaTrasacao),
   verificaSeNumeroTransacaoExiste,
   atualizarTransacao
 );
